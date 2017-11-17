@@ -1,17 +1,17 @@
 package com.wubinben.katas.refactoringtopatterns.state;
 
-public class PermissionState {
+public abstract class PermissionState {
     private final String stateName;
 
     public PermissionState(String stateName) {
         this.stateName = stateName;
     }
-    public final static PermissionState REQUESTED = new PermissionState("REQUESTED");
-    public final static PermissionState CLAIMED = new PermissionState("CLAIMED");
-    public final static PermissionState GRANTED = new PermissionState("GRANTED");
-    public final static PermissionState DENIED = new PermissionState("DENIED");
-    public static final PermissionState UNIX_REQUESTED = new PermissionState("UNIX_REQUESTED");
-    public static final PermissionState UNIX_CLAIMED = new PermissionState("UNIX_CLAIMED");
+    public final static PermissionState REQUESTED = new PermissionRequested();
+    public final static PermissionState CLAIMED = new PermissionClaimed();
+    public final static PermissionState GRANTED = new PermissionGranted();
+    public final static PermissionState DENIED = new PermissionDenied();
+    public static final PermissionState UNIX_REQUESTED = new UnixPermissionRequested();
+    public static final PermissionState UNIX_CLAIMED = new UnixPermissionClaimed();
 
     @Override
     public String toString() {
