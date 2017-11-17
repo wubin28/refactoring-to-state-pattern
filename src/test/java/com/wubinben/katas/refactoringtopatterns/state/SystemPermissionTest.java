@@ -11,13 +11,13 @@ public class SystemPermissionTest {
         final SystemAdmin admin = new SystemAdmin();
         permission.grantedBy(admin);
 
-        assertEquals("requested", permission.REQUESTED, permission.state());
+        assertEquals("requested", PermissionState.REQUESTED, permission.getState());
         assertEquals("not granted", false, permission.isGranted());
 
         permission.claimedBy(admin);
         permission.grantedBy(admin);
 
-        assertEquals("granted", permission.GRANTED, permission.state());
+        assertEquals("granted", PermissionState.GRANTED, permission.getState());
         assertEquals("granted", true, permission.isGranted());
     }
 }
