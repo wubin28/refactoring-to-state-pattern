@@ -5,7 +5,7 @@ public class PermissionRequested extends PermissionState {
         super("REQUESTED");
     }
 
-    public void claimBy(SystemAdmin admin, SystemPermission systemPermission) {
+    public void claimedBy(SystemAdmin admin, SystemPermission systemPermission) {
         systemPermission.willBeHandledBy(admin);
         systemPermission.setPermissionState(CLAIMED);
     }

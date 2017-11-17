@@ -24,7 +24,7 @@ public class SystemPermission {
     }
 
     public void claimedBy(SystemAdmin admin) {
-        permissionState.claimBy(admin, this);
+        permissionState.claimedBy(admin, this);
     }
 
     void willBeHandledBy(SystemAdmin admin) {
