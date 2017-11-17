@@ -3,11 +3,11 @@ package com.wubinben.katas.refactoringtopatterns.state;
 import static com.wubinben.katas.refactoringtopatterns.state.PermissionState.*;
 
 public class SystemPermission {
-    private SystemProfile profile;
+    SystemProfile profile;
     private SystemUser requestor;
-    private SystemAdmin admin;
-    private boolean isGranted;
-    private boolean isUnixPermissionGranted;
+    SystemAdmin admin;
+    boolean isGranted;
+    boolean isUnixPermissionGranted;
     private PermissionState permissionState;
 
 
@@ -24,57 +24,30 @@ public class SystemPermission {
     }
 
     public void claimedBy(SystemAdmin admin) {
-        if (!getState().equals(REQUESTED) && !getState().equals(UNIX_REQUESTED))
-            return;
-        willBeHandledBy(admin);
-        if (getState().equals(REQUESTED))
-            setPermissionState(CLAIMED);
-        else if (getState().equals(UNIX_REQUESTED))
-            setPermissionState(UNIX_CLAIMED);
+        permissionState.claimBy(admin, this);
     }
 
-    private void willBeHandledBy(SystemAdmin admin) {
+    void willBeHandledBy(SystemAdmin admin) {
         this.admin = admin;
     }
 
     public void deniedBy(SystemAdmin admin) {
-        if (!getState().equals(CLAIMED) && !getState().equals(UNIX_CLAIMED))
-            return;
-        if (!this.admin.equals(admin))
-            return;
-        isGranted = false;
-        isUnixPermissionGranted = false;
-        setPermissionState(DENIED);
-        notifyUserOfPermissionRequestResult();
+        permissionState.deniedBy(admin, this);
     }
 
-    private void notifyUserOfPermissionRequestResult() {
+    void notifyUserOfPermissionRequestResult() {
 
     }
 
     public void grantedBy(SystemAdmin admin) {
-        if (!getState().equals(CLAIMED) && !getState().equals(UNIX_CLAIMED))
-            return;
-        if (!this.admin.equals(admin))
-            return;
-
-        if (profile.isUnixPermissionRequired() && getState().equals(UNIX_CLAIMED))
-            isUnixPermissionGranted = true;
-        else if (profile.isUnixPermissionRequired() && !profile.isUnixPermissionGranted()) {
-            setPermissionState(UNIX_REQUESTED);
-            notifyUnixAdminsOfPermissionRequest();
-            return;
-        }
-        setPermissionState(GRANTED);
-        isGranted = true;
-        notifyUserOfPermissionRequestResult();
+        permissionState.grantedBy(admin, this);
     }
 
-    private void notifyUnixAdminsOfPermissionRequest() {
+    void notifyUnixAdminsOfPermissionRequest() {
 
     }
 
-    public void setPermissionState(PermissionState permissionState) {
+    void setPermissionState(PermissionState permissionState) {
         this.permissionState = permissionState;
     }
 
